@@ -99,6 +99,7 @@ def urlShortnerView(request):
             jwt_auth = JWTAuthentication()
     
             # try:
+            
             #     validated_token = jwt_auth.get_validated_token(token)
             #     user = jwt_auth.get_user(validated_token)
             # except:
