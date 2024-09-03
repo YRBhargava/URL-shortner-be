@@ -2,6 +2,8 @@ from typing import Any
 from django.db import models
 from django.core.validators import RegexValidator
 from django.utils import timezone
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+# from .managers import CustomUserManager
 
 #--------THIS IS USER MODEL-------------------
 class User(models.Model):
@@ -19,7 +21,25 @@ class User(models.Model):
     def __str__(self):
         return (self.name, self.email, self.phone)
     
+# class User(AbstractBaseUser, PermissionsMixin):
+#     email=models.EmailField(max_length=20, null=False, blank=False)
+#     userId = models.AutoField(primary_key=True)
+#     name=models.CharField(max_length=20,null=False, blank=False )
+#     phone = models.CharField(
+#        max_length=10, 
+#        validators=[RegexValidator(regex=r'^\d{10}$', message='Phone number must be exactly 10 digits.', code='invalid_phone')],
+#        null=False, 
+#        blank=False
+#        )
+#     password=models.CharField(max_length=100 ,null=False, blank=False)
     
+#     USERNAME_FIELD = "email"
+#     REQUIRED_FIELDS = []
+    
+#     def __init__(self):
+#         return self.userId
+
+
 #---------THIS IS URL MODEL-------------------------
 class Url(models.Model):
     userId = models.ForeignKey(User, on_delete=models.DO_NOTHING,related_name='urls')

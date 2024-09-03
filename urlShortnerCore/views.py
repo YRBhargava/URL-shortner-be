@@ -26,7 +26,7 @@ def loginView(request):
             if user and check_password(password, user.password):
                 refresh = RefreshToken.for_user(user)
                 access_token = str(refresh.access_token)
-                print(access_token)
+                print('------LINE 29-----',access_token)
                 
                 return JsonResponse({
                     'message': 'Login successful',
@@ -85,7 +85,7 @@ def urlShortnerView(request):
             userId = data.get('userId')
             
             auth_header = request.headers.get('Authorization')
-            #print(auth_header)
+            print(auth_header)
     
             if auth_header is None:
                 return JsonResponse({'message': 'Authorization header missing'}, status=401)
@@ -98,24 +98,17 @@ def urlShortnerView(request):
             
             jwt_auth = JWTAuthentication()
     
-            # try:
-            
-            #     validated_token = jwt_auth.get_validated_token(token)
-            #     user = jwt_auth.get_user(validated_token)
-            # except:
-            #     return JsonResponse({'message': 'Invalid token'}, status=401)
-            
             try:
-                print(f"Token received: {token}")
+                print('###################')
                 validated_token = jwt_auth.get_validated_token(token)
+                print('###################')
+                print(validated_token)
                 user = jwt_auth.get_user(validated_token)
-                print(f"Authenticated user: {user}")
-            except Exception as e:
-                print(f"Token validation error: {str(e)}")
-                return JsonResponse({'message': 'Invalid token', 'error': str(e)}, status=401)
-
-
-
+                print(user)
+                print('###################')
+            except:
+                return JsonResponse({'message': 'Invalid token'}, status=401)
+            
 
             if not originalUrl or not userId:
                 return JsonResponse({'message': 'URL is required'}, status=400)
