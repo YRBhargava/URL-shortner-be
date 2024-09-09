@@ -4,10 +4,9 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
 from django.shortcuts import get_object_or_404, redirect
 from rest_framework_simplejwt.tokens import RefreshToken 
-from rest_framework.decorators import permission_classes,api_view
+from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .serializers import LoginSerializer
 import json,random,string
 from django.utils import timezone
 from .models import User,Url
@@ -18,11 +17,6 @@ from .models import User,Url
 def loginView(request):
     if request.method == 'POST':
         try:
-            # data = json.loads(request.body.decode('utf-8'))
-            # serializer = LoginSerializer(data=data)
-            # if serializer.is_valid():
-            #     return JsonResponse(serializer.validated_data, status=200)
-            # return JsonResponse(serializer.errors, status=401)
             data = json.loads(request.body.decode('utf-8'))
             email = data.get('email')
             password = data.get('password')
@@ -32,7 +26,6 @@ def loginView(request):
             if user and check_password(password, user.password):
                 refresh = RefreshToken.for_user(user)
                 access_token = str(refresh.access_token)
-                print('------LINE 29-----',access_token)
                 
                 return JsonResponse({
                     'message': 'Login successful',
@@ -91,7 +84,6 @@ def urlShortnerView(request):
             userId = data.get('userId')
             
             auth_header = request.headers.get('Authorization')
-            print(auth_header)
     
             if auth_header is None:
                 return JsonResponse({'message': 'Authorization header missing'}, status=401)
@@ -109,7 +101,6 @@ def urlShortnerView(request):
                 user = jwt_auth.get_user(validated_token)
                 
             except Exception as e:
-                print('####E--X--C--E--P--T--I--O--N####',e)
                 return JsonResponse({'message': 'Invalid token'}, status=401)
             
 
@@ -159,11 +150,30 @@ def shortToOriginalView(request,path):
     
 #-------------------------Urls History--------------
 @csrf_exempt
+@permission_classes([IsAuthenticated])
 def urlsHistoryView(request, userId):
     if request.method == 'GET':
         try:
-            # Check if the user exists
             user = User.objects.get(userId=userId)
+            auth_header = request.headers.get('Authorization')
+    
+            if auth_header is None:
+                return JsonResponse({'message': 'Authorization header missing'}, status=401)
+    
+            try:
+                token = auth_header.split(' ')[1]
+                
+            except IndexError:
+                return JsonResponse({'message': 'Token not provided'}, status=401)
+            
+            jwt_auth = JWTAuthentication()
+    
+            try:
+                validated_token = jwt_auth.get_validated_token(token)
+                user = jwt_auth.get_user(validated_token)
+                
+            except Exception as e:
+                return JsonResponse({'message': 'Invalid token'}, status=401)
         except User.DoesNotExist:
             return JsonResponse({'message': 'User not found'}, status=404)
 
