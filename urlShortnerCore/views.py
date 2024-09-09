@@ -7,6 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import permission_classes,api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from .serializers import LoginSerializer
 import json,random,string
 from django.utils import timezone
 from .models import User,Url
@@ -17,6 +18,11 @@ from .models import User,Url
 def loginView(request):
     if request.method == 'POST':
         try:
+            # data = json.loads(request.body.decode('utf-8'))
+            # serializer = LoginSerializer(data=data)
+            # if serializer.is_valid():
+            #     return JsonResponse(serializer.validated_data, status=200)
+            # return JsonResponse(serializer.errors, status=401)
             data = json.loads(request.body.decode('utf-8'))
             email = data.get('email')
             password = data.get('password')
@@ -99,14 +105,11 @@ def urlShortnerView(request):
             jwt_auth = JWTAuthentication()
     
             try:
-                print('###################')
                 validated_token = jwt_auth.get_validated_token(token)
-                print('###################')
-                print(validated_token)
                 user = jwt_auth.get_user(validated_token)
-                print(user)
-                print('###################')
-            except:
+                
+            except Exception as e:
+                print('####E--X--C--E--P--T--I--O--N####',e)
                 return JsonResponse({'message': 'Invalid token'}, status=401)
             
 
@@ -149,7 +152,6 @@ def urlShortnerView(request):
 def shortToOriginalView(request,path):
     try:
         url=get_object_or_404(Url, shortUrl=path)
-        print(url.originalUrl)
         return redirect(url.originalUrl)
     except Exception as e:
         return JsonResponse({'message': 'URL Not Found'}, status=404)

@@ -90,7 +90,7 @@ SIMPLE_JWT = {
     # 'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'ALGORITHM': 'HS256',
-    'SIGNING_KEY': None,
+    'SIGNING_KEY': SECRET_KEY,
     'VERIFYING_KEY': None,
     'AUTH_HEADER_TYPES': ('Bearer',),
     'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
@@ -100,7 +100,7 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
 }
 
-# AUTH_USER_MODEL = 'urlShortnerCore.User'
+AUTH_USER_MODEL = 'urlShortnerCore.User'
 
 WSGI_APPLICATION = 'urlShortnerBe.wsgi.application'
 
