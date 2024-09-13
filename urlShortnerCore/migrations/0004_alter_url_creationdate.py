@@ -7,13 +7,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('urlShortnerCore', '0002_alter_url_creationdate'),
+        ('urlShortnerCore', '0003_alter_url_creationdate'),
     ]
 
     operations = [
         migrations.AlterField(
             model_name='url',
             name='creationDate',
-            field=models.DateTimeField(default=datetime.datetime(2024, 9, 9, 18, 4, 7, 247611, tzinfo=datetime.timezone.utc)),
+            field=models.DateTimeField(default=datetime.datetime(2024, 9, 9, 18, 4, 24, 292877, tzinfo=datetime.timezone.utc)),
         ),
     ]

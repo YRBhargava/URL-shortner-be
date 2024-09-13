@@ -87,7 +87,7 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'user_id',
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': True,
+    # 'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,
@@ -96,6 +96,8 @@ SIMPLE_JWT = {
     'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
+    "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
 }
 
 AUTH_USER_MODEL = 'urlShortnerCore.User'
