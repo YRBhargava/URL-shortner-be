@@ -1,0 +1,10 @@
+asgiref==3.8.1
+distlib==0.3.8
+Django==5.1
+django-cors-headers==4.4.0
+filelock==3.13.1
+platformdirs==4.2.0
+sqlparse==0.5.1
+uv==0.3.3
+virtualenv==20.25.0
+djangorestframework-simplejwt==5.3.1
