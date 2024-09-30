@@ -1,0 +1,11 @@
+version: "27.1.1"
+services:
+  app:
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - 8001:8001
+    image: application:url-shortner-be
+    container_name: url_shortner
+    command: ["python","manage.py","runserver", "0.0.0.0:8001"]
