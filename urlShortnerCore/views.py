@@ -95,10 +95,11 @@ def urlShortnerView(request):
                 return JsonResponse({'message': 'Token not provided'}, status=401)
             
             jwt_auth = JWTAuthentication()
-    
+            print("viewsss--", auth_header, token)
             try:
                 validated_token = jwt_auth.get_validated_token(token)
                 user = jwt_auth.get_user(validated_token)
+                
                 
             except Exception as e:
                 return JsonResponse({'message': 'Invalid token'}, status=401)
@@ -150,30 +151,11 @@ def shortToOriginalView(request,path):
     
 #-------------------------Urls History--------------
 @csrf_exempt
-@permission_classes([IsAuthenticated])
 def urlsHistoryView(request, userId):
     if request.method == 'GET':
         try:
             user = User.objects.get(userId=userId)
-            auth_header = request.headers.get('Authorization')
     
-            if auth_header is None:
-                return JsonResponse({'message': 'Authorization header missing'}, status=401)
-    
-            try:
-                token = auth_header.split(' ')[1]
-                
-            except IndexError:
-                return JsonResponse({'message': 'Token not provided'}, status=401)
-            
-            jwt_auth = JWTAuthentication()
-    
-            try:
-                validated_token = jwt_auth.get_validated_token(token)
-                user = jwt_auth.get_user(validated_token)
-                
-            except Exception as e:
-                return JsonResponse({'message': 'Invalid token'}, status=401)
         except User.DoesNotExist:
             return JsonResponse({'message': 'User not found'}, status=404)
 
